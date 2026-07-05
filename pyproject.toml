@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leetcode-exporter"
+version = "1.0.0"
+description = "Automatically export all solved LeetCode solutions from your account to a GitHub repository"
+readme = "README_PROJECT.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "LeetCode Exporter Team"}
+]
+keywords = ["leetcode", "scraper", "selenium", "export"]
+
+dependencies = [
+    "selenium>=4.20.0",
+    "webdriver-manager>=4.0.0",
+    "GitPython>=3.1.0",
+    "rich>=13.0.0",
+    "tqdm>=4.0.0",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "mypy>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/leetcode-exporter"
+Repository = "https://github.com/your-username/leetcode-exporter.git"
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=. --cov-report=html --cov-report=term"
