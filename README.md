@@ -63,5 +63,3 @@ python main.py
 - **Bị đứng ở lúc đăng nhập:** Hãy tắt chương trình (`Ctrl + C`) và chạy lại `python main.py`. Đôi khi do mạng chậm hoặc LeetCode hỏi Captcha.
 - **Lỗi không lấy được code:** Chương trình lấy bài qua giao thức API ngầm, bảo đảm không bao giờ thiếu code. Tuy nhiên nếu mạng chập chờn, chương trình sẽ báo lỗi tại bài đó và tự tải lại ở những lần chạy sau.
 
-## Giấy phép
-Mã nguồn được cung cấp mở (Open Source) và sử dụng tuỳ ý.
