@@ -19,6 +19,17 @@ class GitManager:
             logger.info("Initializing new Git repository at: %s", repo_path)
             self.repo = Repo.init(repo_path)
 
+    def set_remote(self, url: str, remote_name: str = "origin") -> None:
+        """Set or update the remote URL for pushing."""
+        try:
+            remote = self.repo.remote(remote_name)
+            if list(remote.urls)[0] != url:
+                remote.set_url(url)
+                logger.info("Updated remote %s to %s", remote_name, url)
+        except ValueError:
+            self.repo.create_remote(remote_name, url)
+            logger.info("Added remote %s pointing to %s", remote_name, url)
+
     def stage_all(self) -> None:
         """Stage all changes for commit."""
         try:

@@ -13,6 +13,7 @@ class AppConfig:
     password: str
     output_path: Path
     repo_path: Path
+    repo_url: str = ""
     log_level: str = "INFO"
     headless: bool = True
     browser: str = "chrome"
@@ -29,6 +30,7 @@ class AppConfig:
         - LEETCODE_PASSWORD
         - OUTPUT_PATH
         - REPO_PATH
+        - REPO_URL
         - LOG_LEVEL
         - HEADLESS (true/false)
         - BROWSER (chrome, edge, auto)
@@ -43,6 +45,7 @@ class AppConfig:
         password = os.getenv("LEETCODE_PASSWORD") or raw.get("leetcode", {}).get("password", "")
         output_path = os.getenv("OUTPUT_PATH") or raw.get("output_path", "exported_solutions")
         repo_path = os.getenv("REPO_PATH") or raw.get("repo_path", ".")
+        repo_url = os.getenv("REPO_URL") or raw.get("repo_url", "")
         log_level = os.getenv("LOG_LEVEL", raw.get("log_level", "INFO"))
         headless = os.getenv("HEADLESS", str(raw.get("headless", True))).lower() in ("true", "1", "yes")
         browser = os.getenv("BROWSER", raw.get("browser", "chrome")).lower()
@@ -54,6 +57,7 @@ class AppConfig:
             password=password,
             output_path=Path(output_path).expanduser().resolve(),
             repo_path=Path(repo_path).expanduser().resolve(),
+            repo_url=repo_url,
             log_level=log_level.upper(),
             headless=headless,
             browser=browser,

@@ -49,6 +49,8 @@ def main() -> None:
         
         resume_state = ResumeState()
         git_manager = GitManager(config.repo_path)
+        if config.repo_url:
+            git_manager.set_remote(config.repo_url)
         export_service = ExportFolderService(config.output_path)
         readme_service = ReadmeService(config.output_path)
 
