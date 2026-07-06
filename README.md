@@ -44,14 +44,13 @@ log_level: INFO
 headless: false
 ```
 *Lưu ý: Nếu bật `headless: true`, chương trình sẽ chạy ngầm không hiện cửa sổ Chrome.*
-
+================================================================
 ## Cách sử dụng
-
-Chỉ cần chạy lệnh duy nhất này trong Terminal:
-```bash
-python main.py
-```
-
+Chỉ cần chạy các lệnh này trong Terminal:
+1. cd.... (VD: D:\Destop\ProjectUploadGit\leetcode-exporter)
+2. .venv\Scripts\activate
+3. python main.py
+================================================================
 **Quá trình chương trình hoạt động:**
 1. Khởi động Chrome và tự động đăng nhập (nếu gặp xác thực Capcha hoặc Cloudflare, bạn có thể tự tay bấm xác thực trong cửa sổ Chrome).
 2. Quét toàn bộ danh sách bài bạn đã giải (Accept).

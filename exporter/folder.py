@@ -26,6 +26,15 @@ class ExportFolderService:
             logger.error("Failed to create folder for problem %s: %s", problem.problem_id, str(exc))
             raise ExportException(f"Failed to create folder for problem {problem.problem_id}") from exc
 
+    def is_problem_exported(self, problem: LeetCodeProblem) -> bool:
+        """Check if problem has already been exported (folder exists and is not empty)."""
+        directory_name = f"{problem.problem_id.zfill(4)}-{problem.slug}"
+        folder_path = self.base_path / directory_name
+        if folder_path.exists() and folder_path.is_dir():
+            # Check if there are any files inside the folder
+            return any(folder_path.iterdir())
+        return False
+
     def save_solution(self, problem: LeetCodeProblem, submission: SubmissionCode) -> Path:
         """Save solution code to file."""
         try:

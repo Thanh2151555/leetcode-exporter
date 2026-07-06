@@ -40,12 +40,17 @@ class GitManager:
             logger.error("Failed to commit changes: %s", str(exc))
             raise GitException("Failed to commit changes") from exc
 
-    def push(self, remote_name: str = "origin", branch: str = "main") -> None:
+    def push(self, remote_name: str = "origin", branch: str = None) -> None:
         """Push changes to remote repository."""
         try:
             remote = self.repo.remote(remote_name)
+            if branch is None:
+                branch = self.repo.active_branch.name
             remote.push(branch)
             logger.info("Pushed changes to %s/%s", remote_name, branch)
+        except TypeError:
+            logger.error("Failed to determine active branch (detached HEAD?)")
+            raise GitException("Failed to determine active branch for push")
         except GitCommandError as exc:
             logger.error("Failed to push changes: %s", str(exc))
             raise GitException("Failed to push changes to remote") from exc

@@ -64,11 +64,17 @@ def main() -> None:
             all_problems = problemset_crawler.collect_solved_problems()
             logger.info("Found %d solved problems", len(all_problems))
 
-            # Step 3: Filter problems that need to be exported (resume support)
-            problems_to_export = [
-                p for p in all_problems
-                if not resume_state.is_problem_done(p.problem_id)
-            ]
+            # Step 3: Filter problems that need to be exported (resume support & filesystem check)
+            problems_to_export = []
+            for p in all_problems:
+                if resume_state.is_problem_done(p.problem_id):
+                    continue
+                if export_service.is_problem_exported(p):
+                    # Mark as done in state so we don't check disk again next time
+                    resume_state.mark_problem_done(p.problem_id)
+                    continue
+                problems_to_export.append(p)
+
             logger.info("Problems to export: %d (skipping %d already exported)", 
                        len(problems_to_export), len(all_problems) - len(problems_to_export))
 

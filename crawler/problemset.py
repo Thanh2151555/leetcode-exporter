@@ -33,43 +33,64 @@ class ProblemSetCrawler:
         };
         var csrfToken = getCookie("csrftoken");
         
-        fetch('https://leetcode.com/graphql', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-csrftoken': csrfToken || ''
-            },
-            body: JSON.stringify({
-                query: `query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
-                  problemsetQuestionList: questionList(
-                    categorySlug: $categorySlug
-                    limit: $limit
-                    skip: $skip
-                    filters: $filters
-                  ) {
-                    questions: data {
-                      frontendQuestionId: questionFrontendId
-                      title
-                      titleSlug
+        var allQuestions = [];
+        var skip = 0;
+        var limit = 100;
+        
+        function fetchPage() {
+            fetch('https://leetcode.com/graphql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-csrftoken': csrfToken || ''
+                },
+                body: JSON.stringify({
+                    query: `query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
+                      problemsetQuestionList: questionList(
+                        categorySlug: $categorySlug
+                        limit: $limit
+                        skip: $skip
+                        filters: $filters
+                      ) {
+                        questions: data {
+                          frontendQuestionId: questionFrontendId
+                          title
+                          titleSlug
+                        }
+                      }
+                    }`,
+                    variables: {
+                        categorySlug: "",
+                        skip: skip,
+                        limit: limit,
+                        filters: { status: "AC" }
                     }
-                  }
-                }`,
-                variables: {
-                    categorySlug: "",
-                    skip: 0,
-                    limit: 2000,
-                    filters: { status: "AC" }
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                var questions = [];
+                if (data && data.data && data.data.problemsetQuestionList && data.data.problemsetQuestionList.questions) {
+                    questions = data.data.problemsetQuestionList.questions;
+                }
+                allQuestions = allQuestions.concat(questions);
+                
+                if (questions.length === limit) {
+                    skip += limit;
+                    fetchPage();
+                } else {
+                    callback({ data: { problemsetQuestionList: { questions: allQuestions } } });
                 }
             })
-        })
-        .then(r => r.json())
-        .then(data => callback(data))
-        .catch(err => callback({error: err.toString()}));
+            .catch(err => callback({error: err.toString()}));
+        }
+        
+        fetchPage();
         """
 
         solved: List[LeetCodeProblem] = []
         try:
-            self.driver.set_script_timeout(30)
+            self.driver.set_script_timeout(120)
             result = self.driver.execute_async_script(script)
             
             if result and "data" in result and result["data"] and "problemsetQuestionList" in result["data"]:
