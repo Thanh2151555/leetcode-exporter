@@ -16,7 +16,7 @@ Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài
 - Trình duyệt Google Chrome đã cài đặt trên máy.
 
 ## Cài đặt
-===========================================================================CÁCH CÀI ĐẶT===============================================================================================
+=========================================CÁCH CÀI ĐẶT
 1. Mở Terminal (Command Prompt / PowerShell) và sao chép mã nguồn về máy:
    ```bash
    1. TẠO FOLDER ĐỂ CHỨA PROJECT
@@ -31,7 +31,7 @@ Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài
    .venv\Scripts\activate
    pip install -r requirements.txt
    ```
-=========================================================================  CÁCH ĐIỀN THÔNG TIN TÀI KHOẢN - MẬT KHẨU - LINK REPOSITORY==============================================
+============================  CÁCH ĐIỀN THÔNG TIN TÀI KHOẢN - MẬT KHẨU - LINK REPOSITORY====
 ## Cấu hình (config.yaml)
 
 Bạn cần chỉnh sửa file `config.yaml` ở thư mục gốc của dự án với thông tin tài khoản LeetCode của mình:
@@ -48,7 +48,7 @@ log_level: INFO
 headless: false
 ```
 *Lưu ý: Nếu bật `headless: true`, chương trình sẽ chạy ngầm không hiện cửa sổ Chrome.*
-====================================================================================== CÁCH CHẠY LẤY CODE + PUSH ===========================================================
+====================== CÁCH CHẠY LẤY CODE + PUSH
 ## Cách sử dụng
 Chỉ cần chạy các lệnh này trong Terminal:
 1. cd.... (VD: D:\Destop\ProjectUploadGit\leetcode-exporter)
@@ -58,8 +58,7 @@ Chỉ cần chạy các lệnh này trong Terminal:
 
 
 
-
-================================================================================== CÁCH HOẠT ĐỘNG= ================================ = = = =================================
+================ CÁCH HOẠT ĐỘNG= ======
 **Quá trình chương trình hoạt động:**
 1. Khởi động Chrome và tự động đăng nhập (nếu gặp xác thực Capcha hoặc Cloudflare, bạn có thể tự tay bấm xác thực trong cửa sổ Chrome).
 2. Quét toàn bộ danh sách bài bạn đã giải (Accept).
@@ -72,7 +71,9 @@ Chỉ cần chạy các lệnh này trong Terminal:
 - **Lỗi không lấy được code:** Chương trình lấy bài qua giao thức API ngầm, bảo đảm không bao giờ thiếu code. Tuy nhiên nếu mạng chập chờn, chương trình sẽ báo lỗi tại bài đó và tự tải lại ở những lần chạy sau.
 
 
-Uploading freecompress-Screen Recording 2026-07-17 061705.mp4…
+
+https://github.com/user-attachments/assets/3cff6463-8267-4417-ac53-a31589f07c9f
+
 
 
 
