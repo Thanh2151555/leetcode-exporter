@@ -1,4 +1,5 @@
 # LeetCode Exporter
+ĐỂ GIẢI QUYẾT VẤN ĐỀ SHARE SOLUTIONS CỦA LEETCODE SANG REPOSOTORY CỦA GITHUB, HIỆN TẠI CÁC EXTENTIONS ĐANG LỖI KHÁ NHIEEUF NÊN CÔNG CỤ NÀY LÀ MỘT LỰA CHỌN GIẢI PHÁP
 
 Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài tập đã giải (Accepted) trên LeetCode và tự động đẩy (push) lên một kho lưu trữ (repository) trên GitHub của bạn.
 
