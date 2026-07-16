@@ -1,5 +1,5 @@
 # LeetCode Exporter
-ĐỂ GIẢI QUYẾT VẤN ĐỀ SHARE SOLUTIONS CỦA LEETCODE SANG REPOSOTORY CỦA GITHUB, HIỆN TẠI CÁC EXTENTIONS ĐANG LỖI KHÁ NHIEEUF NÊN CÔNG CỤ NÀY LÀ MỘT LỰA CHỌN GIẢI PHÁP
+ĐỂ GIẢI QUYẾT VẤN ĐỀ SHARE SOLUTIONS CỦA LEETCODE SANG REPOSOTORY CỦA GITHUB, HIỆN TẠI CÁC EXTENTIONS ĐANG LỖI KHÁ NHIỀU NÊN CÔNG CỤ NÀY LÀ MỘT LỰA CHỌN GIẢI PHÁP
 
 Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài tập đã giải (Accepted) trên LeetCode và tự động đẩy (push) lên một kho lưu trữ (repository) trên GitHub của bạn.
 
@@ -16,10 +16,12 @@ Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài
 - Trình duyệt Google Chrome đã cài đặt trên máy.
 
 ## Cài đặt
-
+===========================================================================CÁCH CÀI ĐẶT===============================================================================================
 1. Mở Terminal (Command Prompt / PowerShell) và sao chép mã nguồn về máy:
    ```bash
-   git clone <ĐƯỜNG_DẪN_REPO_CỦA_BẠN>
+   1. TẠO FOLDER ĐỂ CHỨA PROJECT
+   2. CLONE PROJECT VỀ
+   git clone https://github.com/Thanh2151555/leetcode-exporter.git)
    cd leetcode-exporter
    ```
 
@@ -29,29 +31,35 @@ Một công cụ tự động mạnh mẽ giúp bạn tải toàn bộ các bài
    .venv\Scripts\activate
    pip install -r requirements.txt
    ```
-
+=========================================================================  CÁCH ĐIỀN THÔNG TIN TÀI KHOẢN - MẬT KHẨU - LINK REPOSITORY==============================================
 ## Cấu hình (config.yaml)
 
 Bạn cần chỉnh sửa file `config.yaml` ở thư mục gốc của dự án với thông tin tài khoản LeetCode của mình:
 
 ```yaml
 leetcode:
-  username: "email_cua_ban@gmail.com"
-  password: "mat_khau_leetcode"
+  username: "email_cua_ban@gmail.com" (QUAN TRỌNG)
+  password: "mat_khau_leetcode" (QUAN TRỌNG)
 
 output_path: ./exported_solutions
-repo_path: .
+repo_path: ./exported_solutions
+repo_url: https://github.com/your-username/your-repo.git(QUAN TRỌNG)
 log_level: INFO
 headless: false
 ```
 *Lưu ý: Nếu bật `headless: true`, chương trình sẽ chạy ngầm không hiện cửa sổ Chrome.*
-================================================================
+====================================================================================== CÁCH CHẠY LẤY CODE + PUSH ===========================================================
 ## Cách sử dụng
 Chỉ cần chạy các lệnh này trong Terminal:
 1. cd.... (VD: D:\Destop\ProjectUploadGit\leetcode-exporter)
 2. .venv\Scripts\activate
 3. python main.py
-================================================================
+
+
+
+
+
+================================================================================== CÁCH HOẠT ĐỘNG= ================================ = = = =================================
 **Quá trình chương trình hoạt động:**
 1. Khởi động Chrome và tự động đăng nhập (nếu gặp xác thực Capcha hoặc Cloudflare, bạn có thể tự tay bấm xác thực trong cửa sổ Chrome).
 2. Quét toàn bộ danh sách bài bạn đã giải (Accept).
@@ -62,4 +70,10 @@ Chỉ cần chạy các lệnh này trong Terminal:
 ## Xử lý sự cố
 - **Bị đứng ở lúc đăng nhập:** Hãy tắt chương trình (`Ctrl + C`) và chạy lại `python main.py`. Đôi khi do mạng chậm hoặc LeetCode hỏi Captcha.
 - **Lỗi không lấy được code:** Chương trình lấy bài qua giao thức API ngầm, bảo đảm không bao giờ thiếu code. Tuy nhiên nếu mạng chập chờn, chương trình sẽ báo lỗi tại bài đó và tự tải lại ở những lần chạy sau.
+
+
+Uploading freecompress-Screen Recording 2026-07-17 061705.mp4…
+
+
+
 
