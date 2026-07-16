@@ -2,8 +2,8 @@
 
 # LeetCode Credentials
 leetcode:
-  username: your_email@example.com
-  password: your_password
+  username: your_email@example.com (FILL HEAR)
+  password: your_password (FILL HEAR)
 
 # Output directory for exported solutions
 output_path: ./exported_solutions
@@ -12,7 +12,7 @@ output_path: ./exported_solutions
 repo_path: ./exported_solutions
 
 # Git remote repository URL (where to push code)
-repo_url: https://github.com/your-username/your-repo.git
+repo_url: https://github.com/your-username/your-repo.git(FILL HEAR)
 
 # Logging level: DEBUG, INFO, WARNING, ERROR, CRITICAL
 log_level: INFO
