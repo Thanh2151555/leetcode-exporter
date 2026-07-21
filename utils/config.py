@@ -13,6 +13,7 @@ class AppConfig:
     password: str
     output_path: Path
     repo_path: Path
+    session_cookie: str = ""
     repo_url: str = ""
     log_level: str = "INFO"
     headless: bool = True
@@ -28,6 +29,7 @@ class AppConfig:
         Environment variables take precedence:
         - LEETCODE_USERNAME
         - LEETCODE_PASSWORD
+        - LEETCODE_SESSION_COOKIE
         - OUTPUT_PATH
         - REPO_PATH
         - REPO_URL
@@ -43,6 +45,7 @@ class AppConfig:
         # Extract from YAML with env var overrides
         username = os.getenv("LEETCODE_USERNAME") or raw.get("leetcode", {}).get("username", "")
         password = os.getenv("LEETCODE_PASSWORD") or raw.get("leetcode", {}).get("password", "")
+        session_cookie = os.getenv("LEETCODE_SESSION_COOKIE") or raw.get("leetcode", {}).get("session_cookie", "")
         output_path = os.getenv("OUTPUT_PATH") or raw.get("output_path", "exported_solutions")
         repo_path = os.getenv("REPO_PATH") or raw.get("repo_path", ".")
         repo_url = os.getenv("REPO_URL") or raw.get("repo_url", "")
@@ -55,6 +58,7 @@ class AppConfig:
         return cls(
             username=username,
             password=password,
+            session_cookie=session_cookie,
             output_path=Path(output_path).expanduser().resolve(),
             repo_path=Path(repo_path).expanduser().resolve(),
             repo_url=repo_url,

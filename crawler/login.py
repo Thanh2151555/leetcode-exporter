@@ -13,14 +13,19 @@ logger = logging.getLogger("leetcode_exporter")
 
 
 class LoginService:
-    def __init__(self, driver: Chrome, username: str = "", password: str = "") -> None:
+    def __init__(self, driver: Chrome, username: str = "", password: str = "", session_cookie: str = "") -> None:
         self.driver = driver
         self.username = username
         self.password = password
+        self.session_cookie = session_cookie
 
     def _is_logged_in(self) -> bool:
-        self.driver.get("https://leetcode.com/")
+        if "leetcode.com" not in self.driver.current_url:
+            self.driver.get("https://leetcode.com/")
         try:
+            if self.driver.get_cookie("LEETCODE_SESSION"):
+                return True
+                
             # Wait for either the login link or the Premium button to ensure page has loaded
             WebDriverWait(self.driver, 10).until(
                 lambda d: len(d.find_elements(By.XPATH, "//a[contains(@href, '/accounts/login')]")) > 0 or 
@@ -32,9 +37,12 @@ class LoginService:
             if login_link and any(link.is_displayed() for link in login_link):
                 return False
                 
+            if "accounts/login" in self.driver.current_url:
+                return False
+                
             # Otherwise, assume we are logged in
             return True
-        except TimeoutException:
+        except Exception:
             logger.debug("Timeout waiting for page to load during login check.")
             return False
 
@@ -137,12 +145,24 @@ class LoginService:
         except Exception:
             return False
 
-    def ensure_login(self, timeout: int = 120) -> None:
-        self.driver.get("https://leetcode.com/accounts/login/")
+    def ensure_login(self, timeout: int = 30) -> None:
+        if getattr(self, "session_cookie", ""):
+            logger.info("Session cookie provided in config. Injecting cookie...")
+            if "leetcode.com" not in self.driver.current_url:
+                self.driver.get("https://leetcode.com/")
+            self.driver.add_cookie({"name": "LEETCODE_SESSION", "value": self.session_cookie, "domain": ".leetcode.com"})
+            # Verify if cookie works
+            self.driver.get("https://leetcode.com/")
+            if self._is_logged_in():
+                logger.info("Successfully bypassed login using session_cookie.")
+                return
+            logger.warning("Session cookie failed or expired. Falling back to normal login.")
 
         if self._is_logged_in():
             logger.info("Already logged in to LeetCode.")
             return
+
+        self.driver.get("https://leetcode.com/accounts/login/")
 
         if self._login_with_credentials():
             logger.info("Credentials submitted; waiting for login completion.")
@@ -156,35 +176,19 @@ class LoginService:
             if self._wait_for_condition(lambda d: self._is_logged_in() or "leetcode.com/problemset" in d.current_url.lower(), timeout):
                 logger.info("Login detected after Google sign-in.")
                 return
-            logger.info("Google sign-in did not complete automatically; opening Gmail for manual login.")
+            logger.info("Google sign-in did not complete automatically; please login manually on the opened browser window.")
 
-        logger.info("Not logged in to LeetCode yet; please login manually.")
-        self.driver.get("https://mail.google.com/")
+        logger.info("Not logged in to LeetCode yet; please complete login manually on the opened browser window.")
+        
         start = time.time()
         while time.time() - start < timeout:
-            if self._is_google_logged_in():
-                logger.info("Google account login detected.")
-                break
-            time.sleep(2)
-        else:
-            raise LoginFailedException("Timeout: please login to Gmail in the browser window first.")
-
-        logger.info("Google login detected; returning to LeetCode login page.")
-        self.driver.get("https://leetcode.com/accounts/login/")
-        if self._click_google_button():
-            logger.info("Clicked Google sign-in button on LeetCode.")
-        else:
-            logger.info("Please click the Google sign-in button on LeetCode login page manually.")
-
-        start = time.time()
-        while time.time() - start < timeout:
-            if self._is_logged_in():
-                logger.info("Login detected, continuing.")
-                return
             try:
+                # If URL changed from login page, assume they might have logged in successfully
                 if "accounts/login" not in self.driver.current_url.lower():
-                    logger.info("URL changed from login page, assuming logged in.")
-                    return
+                    logger.info("URL changed from login page. Verifying login state...")
+                    if self._is_logged_in():
+                        logger.info("Login detected, continuing.")
+                        return
             except Exception:
                 pass
             time.sleep(2)

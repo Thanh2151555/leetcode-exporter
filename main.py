@@ -58,7 +58,7 @@ def main() -> None:
 
         try:
             # Step 1: Login
-            login_service = LoginService(driver, config.username, config.password)
+            login_service = LoginService(driver, config.username, config.password, config.session_cookie)
             login_service.ensure_login()
 
             # Step 2: Collect solved problems

@@ -91,20 +91,15 @@ class ChromeSessionManager:
                 options=options
             )
         else:
-            from selenium.webdriver.chrome.service import Service as ChromeService
-            from webdriver_manager.chrome import ChromeDriverManager
+            import undetected_chromedriver as uc
             
-            options = ChromeOptions()
+            options = uc.ChromeOptions()
             if self.headless:
                 options.add_argument("--headless=new")
             options.add_argument("--disable-gpu")
-            options.add_argument("--remote-debugging-port=0")
             options.add_argument("--no-first-run")
             options.add_argument("--no-default-browser-check")
-            options.add_argument("--disable-extensions")
             options.add_argument("--window-size=1400,1000")
-            options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            options.add_experimental_option("useAutomationExtension", False)
             
             browser_binary = self._find_browser_binary()
             if browser_binary:
@@ -117,10 +112,9 @@ class ChromeSessionManager:
             # Try creating the Chrome driver. If it fails (common when a user-data
             # profile is locked or incompatible), retry without the user-data args.
             try:
-                self.driver = webdriver.Chrome(
-                    service=ChromeService(ChromeDriverManager().install()),
-                    options=options
-                )
+                from webdriver_manager.chrome import ChromeDriverManager
+                driver_path = ChromeDriverManager().install()
+                self.driver = uc.Chrome(options=options, driver_executable_path=driver_path)
             except Exception as exc:
                 # Remove profile options and retry
                 try:
@@ -130,26 +124,29 @@ class ChromeSessionManager:
                     pass
 
                 # rebuild options without user-data args
-                options = ChromeOptions()
+                options = uc.ChromeOptions()
                 if self.headless:
                     options.add_argument("--headless=new")
                 options.add_argument("--disable-gpu")
-                options.add_argument("--remote-debugging-port=0")
                 options.add_argument("--no-first-run")
                 options.add_argument("--no-default-browser-check")
-                options.add_argument("--disable-extensions")
                 options.add_argument("--window-size=1400,1000")
-                options.add_experimental_option("excludeSwitches", ["enable-automation"])
-                options.add_experimental_option("useAutomationExtension", False)
                 if browser_binary:
                     options.binary_location = browser_binary
 
-                self.driver = webdriver.Chrome(
-                    service=ChromeService(ChromeDriverManager().install()),
-                    options=options
-                )
+                from webdriver_manager.chrome import ChromeDriverManager
+                driver_path = ChromeDriverManager().install()
+                self.driver = uc.Chrome(options=options, driver_executable_path=driver_path)
 
         self.driver.implicitly_wait(10)
+        
+        try:
+            self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            })
+        except Exception:
+            pass
+
         return self.driver
 
     def quit(self) -> None:
